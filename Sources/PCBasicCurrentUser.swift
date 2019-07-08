@@ -89,8 +89,8 @@ public final class PCBasicCurrentUser {
                 userSub.handleEvent(eventID: eventID, headers: headers, data: data)
             },
             onEnd: { _, _, _ in },
-            onError: { [unowned self] error in
-                self.connectionCoordinator.connectionEventCompleted(
+            onError: { [weak self] error in
+                self?.connectionCoordinator.connectionEventCompleted(
                     PCConnectionEvent(currentUser: nil, error: error)
                 )
             }
@@ -119,13 +119,13 @@ public final class PCBasicCurrentUser {
         self.presenceInstance.subscribeWithResume(
             with: &resumableSub,
             using: subscribeRequest,
-            onOpen: { [unowned self, unowned presenceSub] in
-                self.connectionCoordinator.connectionEventCompleted(
+            onOpen: { [weak self, unowned presenceSub] in
+                self?.connectionCoordinator.connectionEventCompleted(
                     PCConnectionEvent(presenceSubscription: presenceSub, error: nil)
                 )
             },
-            onError: { [unowned self] error in
-                self.connectionCoordinator.connectionEventCompleted(
+            onError: { [weak self] error in
+                self?.connectionCoordinator.connectionEventCompleted(
                     PCConnectionEvent(presenceSubscription: nil, error: error)
                 )
             }
